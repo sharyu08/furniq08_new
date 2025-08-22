@@ -5,6 +5,7 @@ import Category from "./components/Category";
 import ProductCard from "./components/ProductCard";
 import StealDeal from "./components/StealDeal";
 import FeatureSection from "./components/FeatureSection";
+import DemistifyHometown from "./components/DemistifyHometown";
 import Footer from "./components/Footer";
 
 export default function HomePage() {
@@ -39,7 +40,8 @@ export default function HomePage() {
         {/* ✅ Featured Section */}
         <FeatureSection />
       </main>
-
+      {/* Describtion of project*/}
+      <DemistifyHometown/>
       {/* ✅ Footer (separated for clarity) */}
       <Footer />
     </div>

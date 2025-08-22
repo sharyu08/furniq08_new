@@ -12,8 +12,20 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+// 🔹 Define menu item types
+interface SubMenuItem {
+  name: string;
+  href: string;
+}
+
+interface MenuItem {
+  title: string;
+  href: string;
+  children?: SubMenuItem[];
+}
+
 // Furniture menu
-const furnitureMenu = [
+const furnitureMenu: MenuItem[] = [
   {
     title: "Living Room Furniture",
     href: "/furniture/living-room",
@@ -39,7 +51,7 @@ const furnitureMenu = [
 ];
 
 // Kitchen menu
-const kitchenMenu = [
+const kitchenMenu: MenuItem[] = [
   {
     title: "Cookware",
     href: "/kitchen/cookware",
@@ -65,7 +77,7 @@ const kitchenMenu = [
 ];
 
 // Home Decor menu
-const decorMenu = [
+const decorMenu: MenuItem[] = [
   { title: "Room Decor", href: "/decor/room-decor" },
   { title: "Candle Holders", href: "/decor/candle-holders" },
   { title: "Garden", href: "/decor/garden" },
@@ -74,7 +86,7 @@ const decorMenu = [
 ];
 
 // Home Furnishing menu
-const furnishingMenu = [
+const furnishingMenu: MenuItem[] = [
   { title: "Cushions & Fillers", href: "/furnishing/cushions-fillers" },
   { title: "Curtains", href: "/furnishing/curtains" },
   { title: "Bed Linen", href: "/furnishing/bed-linen" },
@@ -84,14 +96,14 @@ const furnishingMenu = [
 ];
 
 // Interiors menu
-const interiorsMenu = [
+const interiorsMenu: MenuItem[] = [
   { title: "Modular Kitchen", href: "/interiors/kitchen" },
   { title: "Wardrobes", href: "/interiors/wardrobes" },
   { title: "Full Home Interiors", href: "/interiors/full-home" },
 ];
 
 // Clearance Sale menu
-const clearanceMenu = [
+const clearanceMenu: MenuItem[] = [
   { title: "Furniture", href: "/clearance/furniture" },
   { title: "Homeware", href: "/clearance/homeware" },
 ];
@@ -101,7 +113,7 @@ export default function Navbar() {
   const [openSub, setOpenSub] = useState<number | null>(null);
 
   // Reusable dropdown renderer
-  const renderDropdown = (menu: any[], menuKey: string) => (
+  const renderDropdown = (menu: MenuItem[], menuKey: string) => (
     <div className="absolute left-0 mt-2 bg-white border rounded-lg shadow-lg w-64 z-50">
       <ul className="py-2">
         {menu.map((item, idx) => (
@@ -127,7 +139,7 @@ export default function Navbar() {
             {/* Side Submenu */}
             {item.children && openSub === idx && (
               <ul className="absolute top-0 left-full bg-white border rounded-lg shadow-lg w-64">
-                {item.children.map((sub: any) => (
+                {item.children.map((sub) => (
                   <li key={sub.name}>
                     <Link
                       href={sub.href}

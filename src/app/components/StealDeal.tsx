@@ -45,11 +45,11 @@ export default function HomePageSections() {
 
   const rooms = [
     { id: 1, name: "Display Cabinet", img: "/images/40 image.webp" },
-    { id: 2, name: "Dining", img: "/images/DR.webp" },
-    { id: 3, name: "Drawing room", img: "/images/LR.webp" },
-    { id: 4, name: "Kitchen", img: "/images/MK.webp" },
-    { id: 5, name: "Study", img: "/images/OS.webp" },
-    { id: 6, name: "Bedroom", img: "/images/BR2.webp" },
+    { id: 2, name: "Dining", img: "/images/pa14.jpg" },
+    { id: 3, name: "Drawing room", img: "/images/pa17.jpg" },
+    { id: 4, name: "Kitchen", img: "/images/pa15.jpg" },
+    { id: 5, name: "Study", img: "/images/pa12.jpg" },
+    { id: 6, name: "Bedroom", img: "/images/pa16.jpg" },
   ];
   
   return (
@@ -119,7 +119,7 @@ export default function HomePageSections() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
           {rooms.map((room) => (
             <div key={room.id} className="group relative">
-              <div className="relative w-full aspect-[4/3] overflow-hidden shadow-lg rounded-2xl">
+              <div className="relative w-3/4 mx-auto aspect-square overflow-hidden shadow-lg rounded-xl">
                 <Image
                   src={room.img}
                   alt={room.name}

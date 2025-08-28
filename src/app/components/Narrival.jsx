@@ -50,6 +50,7 @@ const products = [
 export default function NewArrival() {
   return (
     <section className="min-h-screen py-10 px-4 sm:px-6 lg:px-12 bg-[#FCFCF6]">
+      {/* Title */}
       <div className="mb-12 text-center">
         <h2
           className="text-3xl sm:text-4xl font-extrabold uppercase tracking-wide inline-block"
@@ -71,15 +72,15 @@ export default function NewArrival() {
         />
       </div>
 
-      {/* Always 3 columns */}
-      <div className="grid grid-cols-3 gap-6 justify-center">
+      {/* Responsive grid: 1 → 2 → 3 columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
         {products.map((product) => (
           <div
             key={product.id}
             className="bg-white rounded-xl border border-[#EFEFEF] shadow-sm p-4 flex flex-col transition-shadow hover:shadow-lg relative w-full max-w-xs mx-auto"
             style={{ fontSize: "0.95rem", minHeight: "420px" }}
           >
-            {/* Product image with hover */}
+            {/* Product image with hover swap */}
             <div className="relative w-full aspect-square flex items-center justify-center mb-4 overflow-hidden group">
               <Image
                 src={product.image1}
@@ -95,7 +96,7 @@ export default function NewArrival() {
               />
             </div>
 
-            {/* Details + Button wrapper */}
+            {/* Details + Button */}
             <div className="flex flex-col flex-grow justify-between">
               <div className="mb-4 text-center">
                 <div className="font-semibold text-gray-900 text-base">
@@ -104,22 +105,10 @@ export default function NewArrival() {
                 <div className="text-sm text-gray-500 mt-1">{product.price}</div>
               </div>
 
-              {/* Order Button always at bottom */}
+              {/* Order Button */}
               <button
-                className="w-full py-2 rounded text-sm font-semibold transition-colors border mt-auto"
-                style={{
-                  backgroundColor: "#A0937D",
-                  color: "#fff",
-                  borderColor: "#A0937D",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#8a826b";
-                  e.currentTarget.style.color = "#fff";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "#A0937D";
-                  e.currentTarget.style.color = "#fff";
-                }}
+                className="w-full py-2 rounded text-sm font-semibold transition-colors border mt-auto
+                bg-[#A0937D] text-white border-[#A0937D] hover:bg-[#8a826b]"
               >
                 + Order
               </button>

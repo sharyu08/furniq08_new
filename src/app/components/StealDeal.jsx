@@ -12,8 +12,28 @@ const images = [
   { id: 6, img: "/images/pa16.jpg" },
 ];
 
+// ✅ Custom hook to track screen size
+function useScreenSize() {
+  const [screen, setScreen] = useState<"mobile" | "tablet" | "desktop">("desktop");
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth < 640) setScreen("mobile");
+      else if (window.innerWidth < 1024) setScreen("tablet");
+      else setScreen("desktop");
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return screen;
+}
+
 export default function StealDeal() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const screen = useScreenSize();
 
   // Auto rotate
   useEffect(() => {
@@ -25,11 +45,11 @@ export default function StealDeal() {
 
   return (
     <section className="relative w-full flex justify-center px-4 sm:px-6 md:px-10 py-10">
-      {/* Curved Container with small side space */}
+      {/* Curved Container */}
       <div className="relative w-[95%] max-w-7xl mx-auto min-h-[80vh] flex flex-col md:flex-row items-center overflow-hidden 
         bg-gradient-to-r from-[#F6E6CB] to-[#E7D4B5] 
         rounded-[4rem] shadow-2xl px-6 sm:px-10 md:px-14 lg:px-20">
-        
+
         {/* Left Side Text */}
         <div className="relative flex flex-col justify-center w-full md:w-1/2 min-h-[400px] md:min-h-[500px] z-20 text-left py-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight 
@@ -57,13 +77,6 @@ export default function StealDeal() {
             {images.map((img, idx) => {
               const offset = (idx - activeIdx + images.length) % images.length;
 
-              const isMobile =
-                typeof window !== "undefined" && window.innerWidth < 640;
-              const isTablet =
-                typeof window !== "undefined" &&
-                window.innerWidth >= 640 &&
-                window.innerWidth < 1024;
-
               let x = 0,
                 z = 0,
                 scale = 1,
@@ -71,6 +84,10 @@ export default function StealDeal() {
                 rotateY = 0,
                 width = 180,
                 height = 220;
+
+              // ✅ Adjust values based on screen size
+              const isMobile = screen === "mobile";
+              const isTablet = screen === "tablet";
 
               if (offset === 0) {
                 z = isMobile ? 200 : isTablet ? 280 : 350;

@@ -14,7 +14,8 @@ const images = [
 
 // ✅ Custom hook to track screen size (client only)
 function useScreenSize() {
-  const [screen, setScreen] = useState<"mobile" | "tablet" | "desktop">("desktop");
+  // No TypeScript angle brackets!
+  const [screen, setScreen] = useState("desktop");
 
   useEffect(() => {
     const updateSize = () => {
@@ -22,7 +23,6 @@ function useScreenSize() {
       else if (window.innerWidth < 1024) setScreen("tablet");
       else setScreen("desktop");
     };
-
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
@@ -33,10 +33,10 @@ function useScreenSize() {
 
 export default function StealDeal() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [mounted, setMounted] = useState(false); // ✅ prevent SSR errors
+  const [mounted, setMounted] = useState(false); // Prevent SSR errors
   const screen = useScreenSize();
 
-  // ✅ Only render on client
+  // Only render on client
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -50,7 +50,10 @@ export default function StealDeal() {
     return () => clearInterval(interval);
   }, [mounted]);
 
-  if (!mounted) return null; // ⛔ Don't render during SSR
+  if (!mounted) return null; // Don't render during SSR
+
+  // Defensive mapping
+  const validImages = Array.isArray(images) ? images : [];
 
   return (
     <section className="relative w-full flex justify-center px-4 sm:px-6 md:px-10 py-10">
@@ -58,7 +61,6 @@ export default function StealDeal() {
       <div className="relative w-[95%] max-w-7xl mx-auto min-h-[80vh] flex flex-col md:flex-row items-center overflow-hidden 
         bg-gradient-to-r from-[#F6E6CB] to-[#E7D4B5] 
         rounded-[4rem] shadow-2xl px-6 sm:px-10 md:px-14 lg:px-20">
-
         {/* Left Side Text */}
         <div className="relative flex flex-col justify-center w-full md:w-1/2 min-h-[400px] md:min-h-[500px] z-20 text-left py-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight 
@@ -66,35 +68,23 @@ export default function StealDeal() {
             bg-clip-text text-transparent drop-shadow-[0_4px_6px_rgba(0,0,0,0.25)]">
             Steal Deal
           </h1>
-
           <p className="text-base sm:text-lg md:text-xl font-semibold text-[#5A4E3C] tracking-wide mb-4 sm:mb-6">
             Living • Bedroom • Kitchen • Décor
           </p>
-
           <p className="text-sm sm:text-base md:text-lg text-[#5A4E3C] mb-6 max-w-lg">
             Discover timeless furniture and décor — <br /> curated to make your home warm & inviting.
           </p>
-
           <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#A0937D] text-white rounded-full text-sm sm:text-base font-medium shadow-md hover:bg-[#8a826b] transition w-fit">
             Shop Now
           </button>
         </div>
-
         {/* 3D Carousel */}
         <div className="relative flex-1 h-[380px] sm:h-[450px] md:h-[550px] flex items-center justify-center overflow-hidden mt-8 md:mt-0">
           <div className="relative w-full flex items-center justify-center perspective-[1200px]">
-            {images.map((img, idx) => {
-              const offset = (idx - activeIdx + images.length) % images.length;
+            {validImages.map((img, idx) => {
+              const offset = (idx - activeIdx + validImages.length) % validImages.length;
+              let x = 0, z = 0, scale = 1, opacity = 1, rotateY = 0, width = 180, height = 220;
 
-              let x = 0,
-                z = 0,
-                scale = 1,
-                opacity = 1,
-                rotateY = 0,
-                width = 180,
-                height = 220;
-
-              // ✅ Adjust values based on screen size
               const isMobile = screen === "mobile";
               const isTablet = screen === "tablet";
 
@@ -103,7 +93,7 @@ export default function StealDeal() {
                 scale = 1.15;
                 width = isMobile ? 160 : isTablet ? 200 : 240;
                 height = isMobile ? 200 : isTablet ? 260 : 300;
-              } else if (offset === 1 || offset === images.length - 1) {
+              } else if (offset === 1 || offset === validImages.length - 1) {
                 x =
                   offset === 1
                     ? isMobile

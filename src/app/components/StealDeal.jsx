@@ -12,7 +12,7 @@ const images = [
   { id: 6, img: "/images/pa16.jpg" },
 ];
 
-// ✅ Custom hook to track screen size
+// ✅ Custom hook to track screen size (client only)
 function useScreenSize() {
   const [screen, setScreen] = useState<"mobile" | "tablet" | "desktop">("desktop");
 
@@ -33,15 +33,24 @@ function useScreenSize() {
 
 export default function StealDeal() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [mounted, setMounted] = useState(false); // ✅ prevent SSR errors
   const screen = useScreenSize();
 
-  // Auto rotate
+  // ✅ Only render on client
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Auto rotate carousel
+  useEffect(() => {
+    if (!mounted) return;
     const interval = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % images.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null; // ⛔ Don't render during SSR
 
   return (
     <section className="relative w-full flex justify-center px-4 sm:px-6 md:px-10 py-10">
